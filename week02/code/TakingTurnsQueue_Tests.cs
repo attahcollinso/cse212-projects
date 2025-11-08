@@ -12,6 +12,9 @@ public class TakingTurnsQueueTests
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    // The original Dequeue logic did not handle decrementing turns correctly 
+    // and did not re-add people with infinite turns.
+    // The queue order could also be incorrect due to the PersonQueue implementation.
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -44,6 +47,8 @@ public class TakingTurnsQueueTests
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
     // Defect(s) Found: 
+    // The original implementation could fail to handle new people added midway correctly; 
+    // turns decrementing logic may skip or duplicate some persons.
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -86,6 +91,8 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    // The original code incorrectly decremented or removed persons 
+    // with infinite turns (turns <= 0), breaking the expected sequence. 
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -117,6 +124,8 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
     // Defect(s) Found: 
+    // Persons with negative turns were incorrectly removed or decremented, 
+    // breaking the infinite-turn behavior.
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -144,6 +153,8 @@ public class TakingTurnsQueueTests
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
     // Defect(s) Found: 
+    // The original code did not properly 
+    // throw an InvalidOperationException when the queue was empty.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
