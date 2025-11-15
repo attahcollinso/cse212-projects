@@ -17,29 +17,17 @@
 public class Maze
 {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
-    private int _currX = 1;
-    private int _currY = 1;
+    private int _currX = 0;
+    private int _currY = 0;
 
     public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap)
     {
         _mazeMap = mazeMap;
     }
 
-    Maze maze = new Maze(new Dictionary<(int, int), bool[]>
-    {
-        { (0,0), new bool[] { false, true, false, true } },
-        { (1,0), new bool[] { true, false, false, true } },
-        { (0,1), new bool[] { false, true, true, false } },
-        { (1,1), new bool[] { true, false, true, false } }
-    });
-
-    // start at top left corner
-    private int currX = 0;
-    private int currY = 0;
-
     public (int x, int y) GetPosition()
     {
-        return (currX, currY);
+        return (_currX, _currY);
     }
 
     /// <summary>
@@ -49,11 +37,10 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
-
-        var directions = _mazeMap[(currX, currY)];
+        var directions = _mazeMap[(_currX, _currY)];
         if (directions[0]) // left
         {
-            currX -= 1;
+            _currX -= 1;
         }
         else
         {
@@ -68,10 +55,10 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
-        var directions = _mazeMap[(currX, currY)];
+        var directions = _mazeMap[(_currX, _currY)];
         if (directions[1]) // right
         {
-            currX += 1;
+            _currX += 1;
         }
         else
         {
@@ -86,10 +73,10 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
-        var directions = _mazeMap[(currX, currY)];
+        var directions = _mazeMap[(_currX, _currY)];
         if (directions[2]) // up
         {
-            currY += 1;
+            _currY += 1;
         }
         else
         {
@@ -104,10 +91,10 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
-        var directions = _mazeMap[(currX, currY)];
+        var directions = _mazeMap[(_currX, _currY)];
         if (directions[3]) // down
         {
-            currY -= 1;
+            _currY -= 1;
         }
         else
         {
@@ -117,6 +104,6 @@ public class Maze
 
     public string GetStatus()
     {
-        return $"Current location (x={currX}, y={currY})";
+        return $"Current location (x={_currX}, y={_currY})";
     }
 }
