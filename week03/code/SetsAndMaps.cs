@@ -22,7 +22,26 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> Set = new HashSet<string>(words);
+        List<string> result = new List<string>();
+
+        foreach (var word in words)
+        {
+            if (word[0] != word[1]) // Exclude words with identical letters
+            {
+                string reversedWord = new string(new char[] { word[1], word[0] });
+
+                if (Set.Contains(reversedWord))
+                {
+                    // To avoid duplicates, only add the pair in one order
+                    if (string.Compare(word, reversedWord) < 0)
+                    {
+                        result.Add($"{word} & {reversedWord}");
+                    }
+                }
+            }
+        }
+        return result.ToArray();
     }
 
     /// <summary>
@@ -43,6 +62,20 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+
+            if (fields.Length >= 4)
+            {
+                string degree = fields[3].Trim();
+
+                if (degrees.ContainsKey(degree))
+                {
+                    degrees[degree]++;
+                }
+                else
+                {
+                    degrees[degree] = 1;
+                }
+            }
         }
 
         return degrees;
@@ -67,7 +100,49 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // Remove spaces and convert to lowercase
+        string Word1 = word1.Replace(" ", "").ToLower();
+        string Word2 = word2.Replace(" ", "").ToLower();
+        if (Word1.Length != Word2.Length)
+        {
+            return false;
+        }
+
+        // Create a dictionary to count letter frequencies
+        var Dictionary = new Dictionary<char, int>();
+
+        // Count letters in word1
+        foreach (char letter in Word1)
+        {
+            if (Dictionary.ContainsKey(letter))
+            {
+                Dictionary[letter]++;
+            }
+            else
+            {
+                Dictionary[letter] = 1;
+            }
+        }
+        // Subtract letter counts using word2
+        foreach (char letter in Word2)
+        {
+            if (Dictionary.ContainsKey(letter))
+            {
+                Dictionary[letter]--;
+            }
+            else
+            {
+                return false; // Letter in word2 not found in word1
+            }
+
+            if (Dictionary[letter] < 0)
+            {
+                return false; // too many occurrences in word2 than in word1
+            }
+
+            // It's anagram if all counts are zero
+        }
+        return true;
     }
 
     /// <summary>
@@ -80,7 +155,6 @@ public static class SetsAndMaps
     /// earthquake locations ('place' attribute) and magnitudes ('mag' attribute).
     /// Additional information about the format of the JSON data can be found 
     /// at this website:  
-    /// 
     /// https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
     /// 
     /// </summary>
@@ -101,6 +175,15 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        //prepare a list to hold results
+
+        List<string> results = new List<string>();
+        foreach (var feature in featureCollection.Features)
+        {
+            string place = feature.Properties.Place;
+            double magnitude = feature.Properties.Mag;
+            results.Add($"Location: {place}, Magnitude: {magnitude}");
+        }
+        return results.ToArray();
     }
 }
