@@ -17,15 +17,16 @@
 public class Maze
 {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
-    private int _currX = 0;
-    private int _currY = 0;
+    private int _currX = 1;
+    private int _currY = 1;
 
     public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap)
     {
         _mazeMap = mazeMap;
     }
 
-    public (int x, int y) GetPosition()
+    /// Todo Problem 4 - ADD YOUR CODE HERE 
+    public (int currX, int currY) GetCurrentLocation()
     {
         return (_currX, _currY);
     }
@@ -76,7 +77,7 @@ public class Maze
         var directions = _mazeMap[(_currX, _currY)];
         if (directions[2]) // up
         {
-            _currY += 1;
+            _currY -= 1;
         }
         else
         {
@@ -94,7 +95,7 @@ public class Maze
         var directions = _mazeMap[(_currX, _currY)];
         if (directions[3]) // down
         {
-            _currY -= 1;
+            _currY += 1;
         }
         else
         {

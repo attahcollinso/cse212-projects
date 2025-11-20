@@ -178,12 +178,20 @@ public static class SetsAndMaps
         //prepare a list to hold results
 
         List<string> results = new List<string>();
-        foreach (var feature in featureCollection.Features)
+
+        if (featureCollection?.Features != null)
         {
-            string place = feature.Properties.Place;
-            double magnitude = feature.Properties.Mag;
-            results.Add($"Location: {place}, Magnitude: {magnitude}");
+            foreach (var feature in featureCollection.Features)
+            {
+                string place = feature?.Properties?.Place ?? "Unknown location";
+                double? magValue = feature?.Properties?.Mag;
+                string mag = magValue.HasValue ? magValue.Value.ToString() : "Unknown";
+
+                results.Add($"Place: {place}, - Mag {mag}");
+            }
         }
+
         return results.ToArray();
+
     }
 }
